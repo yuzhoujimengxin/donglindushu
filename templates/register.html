@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>感谢您的注册使用</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/static/plugins/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.6.0/dist/umd/popper.min.js"></script>
+    <style>
+        /*对话框样式*/
+        .frame {
+            width: 400px;
+            /*设置宽度与边框，不设置高度，高度由内容自动撑起来*/
+            border: 2px solid #dddddd;
+            /*水平居中*/
+            margin-right: auto;
+            margin-left: auto;
+            /*离顶部200px*/
+            margin-top: 200px;
+            /*内边距25px*/
+            padding: 25px;
+            /*忘记密码的位置*/
+            position: relative;
+            /*登录框圆角*/
+            border-radius: 5px;
+            /*设置边框阴影*/
+            /*前两个值分别控制水平和数值方向，第三个值控制模糊距离，第四个值为模糊的颜色*/
+            box-shadow: 10px 10px 20px #aaa
+        }
+
+        /*用户登录文本样式*/
+        .account {
+            text-align: center;
+            margin-top: -10px;
+        }
+
+        /*忘记密码文本样式*/
+        .frame .forget {
+            position: absolute;
+            right: 20px;
+            bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="frame clearfix">
+    <div class="account"><h3 style="font-weight: bold">用户注册</h3></div>
+    <form method="post" id="registerForm" onsubmit="register(event)">
+        <div class="form-group">
+            <label for="uname">用户名</label>
+            <input type="text" class="form-control" id="uname" name="username" placeholder="请输入用户名">
+        </div>
+        <div class="form-group">
+            <label for="InputPassword">密码</label>
+            <input type="password" class="form-control" id="InputPassword" name="password" placeholder="请输入密码">
+        </div>
+        <div class="form-group">
+            <label for="InputEmail">邮箱</label>
+            <input type="email" class="form-control" id="InputEmail" name="email" placeholder="请输入邮箱">
+        </div>
+        <button type="submit" class="btn btn-primary">注册</button>
+    </form>
+
+</div>
+<script>
+    function register(event) {
+        // 阻止表单的默认提交行为
+        event.preventDefault();
+
+        var userData = {
+            username: $('#uname').val(),
+            password: $('#InputPassword').val(),
+            email: $('#InputEmail').val()
+        };
+
+        // 发送注册请求
+        $.ajax({
+            url: '/register', // 注册接口地址
+            method: 'POST',
+            contentType: 'application/json', // 设置Content-Type为application/json
+            data: JSON.stringify(userData), // 将对象转换为JSON字符串
+            success(response) {
+                // 当请求成功返回时，这个函数会被调用
+                if (response.isSuccess) {
+                    // 展示注册成功的模态框
+                    $('#exampleModal').modal('show');
+                } else {
+                    // 注册失败模态框
+                    $('#registerFailedModal').modal('show');
+                }
+            },
+            error: function (xhr, status, error) {
+                // 处理其他可能的错误
+                console.error("注册请求失败: " + status, error);
+                let errorMsg = xhr.responseText ? xhr.responseText : "未知错误，请稍后再试";
+                $('#registerFailedModal').modal('show');
+            }
+        });
+    }
+</script>
+
+<!--注册成功模态框-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">成功</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                注册成功！
+            </div>
+            <div class="modal-footer">
+                <!--注册成功模态框关闭按钮-->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--注册成功后进行跳转-->
+<script>
+    $(document).ready(function () {
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            window.location.href = '/login';
+        });
+    });
+</script>
+
+<!--注册失败模态框-->
+<div class="modal fade" id="registerFailedModal" tabindex="-1" role="dialog" aria-labelledby="loginFailedModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerFailedModalLabel">注册失败</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               您输入的邮箱已被注册，请你更换邮箱重新注册！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</script>
+</body>
+</html>

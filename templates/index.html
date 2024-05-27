@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>东林读书</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <style>
+        .more .more-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .text {
+            width: 100%;
+            color: #333;
+            font-size: 14px;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+
+        .content {
+            display: flex;
+        }
+
+        .text::before {
+            content: '';
+            float: right;
+            height: 100%;
+            margin-bottom: -25px;
+        }
+
+        .btn {
+            float: right;
+            clear: both;
+            margin-right: 8px;
+        }
+    </style>
+
+    <script src="/static/js/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/static/plugins/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">东林读书</a>
+        </div>
+
+        <!--全站~~更多导航 -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">全站Top<span class="sr-only">(current)</span></a></li>
+                <li><a href="#">文学</a></li>
+                <li><a href="#">流行</a></li>
+                <li><a href="#">文化</a></li>
+                <li><a href="#">生活</a></li>
+                <li><a href="#">科技</a></li>
+                <li><a href="#">经管</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">东林动态<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">数字东林</a></li>
+                        <li><a href="#">教务系统</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林图书馆</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林计控学院</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="想要搜索的内容">
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> 搜索
+                </button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <!--            控制管理员模块显示-->
+                    {%if is_admin%}
+                    <div id="admin-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">管理员：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                            <li><a href="/admin_comment">管理员评论管理</a></li>
+                            <li><a href="/file_load">文件上传预测</a></li>
+                        </ul>
+                    </div>
+                    {%else%}
+                    <div id="user-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">用户：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                        </ul>
+                    </div>
+                    {%endif%}
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">更多<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">豆瓣读书</a></li>
+                        <li><a href="#">起点中文网</a></li>
+                        <li><a href="#">当当云阅读</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">亚马逊图书商店</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid clearfix">
+    <!--    分区，左9右3-->
+    <div class="col-sm-9">
+        <!--        媒体事件-->
+        <div class="media">
+            <div class="media-left">
+                <a href="/book">
+                    <img class="media-object" data-src="holder.js/64x96" alt="64×96"
+                         src="/static/img/我在北京送快递.jpg"
+                         data-holder-rendered="true" _mstalt="38818" _msthash="1169" style="width: 64px; height: 96px;">
+                </a>
+            </div>
+
+            <div class="media-body">
+                <h4 class="media-heading" _msttexthash="13787852" _msthash="1170"><a href="/book">我在北京送快递</a>
+                </h4><font
+                    _mstmutation="1"
+                    _msttexthash="487371638"
+                    _msthash="1171">
+                <div>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star-o" aria-hidden="true" style="color:orange"></i>
+                </div>
+                <div class="content">
+                    <div class="text">
+                        <label class="btn">全部展开</label>
+                        <span>
+                       进入社会工作至今的二十年间，胡安焉走南闯北，辗转于广东、广西、云南、上海、北京等地，做过快递员、夜班拣货工人、便利店店员、保安、自行车店销售、服装店导购、加油站加油工……他将日常的点滴和工作的甘苦化作真诚的自述，记录了一个平凡人在生活中的辛劳、私心、温情、正气。
+
+                在物流公司夜间拣货的一年，给他留下了深刻的生理印记：“这份工作还会令人脾气变坏，因为长期熬夜以及过度劳累，人的情绪控制力会明显下降……我已经感到脑子不好使了，主要是反应变得迟钝，记忆力开始衰退。”在北京送快递的两年，他“把自己看作一个时薪30元的送货机器，达不到额定产出值就恼羞成怒、气急败坏”……
+
+                但他最终认识到，怀着怨恨的人生是不值得过的。这些在事后追忆中写成的工作经历，渗透着他看待生活和世界的态度与反思，旨在表达个人在有限的选择和局促的现实中，对生活意义的直面和肯定：生活中许多平凡隽永的时刻，要比现实困扰的方方面面对人生更具有决定意义。
+
+                ————
+
+                ✨2023年豆瓣年度图书No.1
+
+                ✨第二届三联行读图书奖文学类中文原创年度图书、QQ阅读2023年度十大非虚构好书
+
+                ✨上市以来，南方周末、澎湃新闻、人物、南方人物周刊、新周刊、新京报、界面文化、GQ、看理想、单读等多家主流媒体或平台持续热议
+
+                ·
+
+                《我在北京送快递》应该加入市民生活必读书，让更多人了解社会运转背后各行各业的力量。
+
+                ——《人民日报》
+                   </span>
+                    </div>
+                </div>
+            </font>
+                <div class="more">
+                    <div class="more-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> 2023-3-24
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> 胡安焉
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i> 44210
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" data-src="holder.js/64x96" alt="64×96"
+                         src="/static/img/明亮的夜晚.jpg"
+                         data-holder-rendered="true" _mstalt="38818" _msthash="1169" style="width: 64px; height: 96px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" _msttexthash="13787852" _msthash="1170">明亮的夜晚</h4><font _mstmutation="1"
+                                                                                                       _msttexthash="487371638"
+                                                                                                       _msthash="1171">
+                <div>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true" style="color:orange"></i>
+                </div>
+                <div class="content">
+                    <div class="text">
+                        <label class="btn">全部展开</label>
+                        <span>
+                            我有一个愿望，想写一写妈妈或祖母，很久以前生活在这片土地上的女性的故事。
+
+                        一部女性版的《活着》，四代女性的友谊、抗争、泪水与欢笑
+
+                        韩国最大网络书店22万读者票选“2021年度之书”
+
+                        第29届大山文学奖获奖作，天才作家崔恩荣首部长篇小说！
+
+                        女人们不再是仅供同情、怜悯的角色，也不再是装饰男人壮丽生活的配角。
+
+                        她们是自己，生如草芥，彼此搀扶，尽全身之力对抗荒诞的时代。
+
+                        -------------------
+
+                        和丈夫离婚后，三十一岁的我独自来到海边小城熙岭，却在那里邂逅多年未见的祖母。尴尬和沉默之后，孤独的心一点点靠近，我和祖母成为相互倾吐心声的朋友。在祖母家老屋的旧相册里，我发现一位和我长相非常相似的女子，依偎在少女时代的祖母身旁。
+
+                        一个个鲜活的面孔逐渐从一张张黑白相片中，从一封封感人至深的书信中，从久远的回忆里，穿过女人生如飘萍、命如草芥的时代，走到我面前。
+
+                        经过曾祖母、祖母和母亲，来到我身边的故事，
+
+                        她们的人生在我的眼前重现。
+
+                        现在的我能够触及她们吗?
+
+                        正如过去无数的我组成了现在的我，
+
+                        现在的我也能见到过去的无数个我吗？
+                   </span>
+
+                    </div>
+                </div>
+            </font>
+                <div class="more">
+                    <div class="more-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> 2023-8-1
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> [韩] 崔恩荣
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i>19605
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" data-src="holder.js/64x64" alt="64×64"
+                         src="/static/img/一百年许多事许多人.jpg"
+                         data-holder-rendered="true" _mstalt="38818" _msthash="1169" style="width: 64px; height: 96px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" _msttexthash="13787852" _msthash="1170">一百年，许多人，许多事</h4><font
+                    _mstmutation="1"
+                    _msttexthash="487371638"
+                    _msthash="1171">
+                <div>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true" style="color:orange"></i>
+                </div>
+                <div class="content">
+                    <div class="text">
+                        <label class="btn">全部展开</label>
+                        <span>
+                           “人的一生不知要遇到多少人与事，到了我这个岁数，经历过军阀混战、抗日战争、解放战争，以及新中国成立之后发生的种种，我虽是个平凡的人，却也有许许多多的人可念，许许多多的事想说。”
+
+                    本书是五四运动同龄人、西南联大进步学子、翻译名家、百岁老人杨苡的唯一口述自传。从1919年走向今天，杨苡的人生百年，正是中国栉风沐雨、沧桑巨变的百年。时代与人生的淬炼，凝结为一代知识女性的天真与浪漫之歌。
+
+                    世纪回眸中，相比于传奇与成就，杨苡更看重她的“日子”，及其承载的亲情、友情、爱情和世情：童年深宅里，祖辈的煊赫、北洋政商两界的风云变幻她不大闹得清，念念不忘者，是一个个普通人的境遇；同窗情谊、少女心事、诗歌与话剧，“中西”十年乘着歌声的翅膀，最是无忧无虑；民族危亡之际，自天津、上海、香港到昆明，西迁途中高唱《松花江上》，文明之火光焰不熄；从西南联大到中央大学，记忆里依旧是年轻的身影——初见“文学偶像”巴金，大轰炸后满头灰土的闻一多，手杖点在石板路上嘀嘀笃笃的吴宓，“夸我们是勇敢少女”的恩师沈从文，还有滇水之边的月下谈心，嘉陵江畔的重逢与告别……
+
+                    学者余斌历时十年，用倾听抵抗遗忘，以细节通向历史的真实。家族旧事、翡翠年华、求学之路、山河故人，一个世纪的人与事在叙述中缓缓展开。“我有意无意间充当了杨先生和读者的中间人，它应该是一部可以面向一般读者的口述史。”
+
+                    【编辑推荐】
+
+                    1.五四运动同龄人、西南联大进步学子、首创“呼啸山庄”译名的翻译名家、百岁老人杨苡，唯一口述自传。
+
+                    从《红楼梦》《儒林外史》到《红与黑》《呼啸山庄》，杨苡先生与兄长杨宪益、爱人赵瑞蕻共同推动中文与世界对话，使文学经典如种子般在不同文明的土壤里生根开花，成就了中国文学翻译事业一个又一个高峰。
+
+                    2.一个世纪的家国史：时代不是她的人生背景，她的人生就是时代本身。
+
+                    军阀混战、抗日战争、解放战争、新中国成立……1919年至今，百年中国经历沧桑巨变，家与国、个人与社会载沉载浮，她为历史提供的是一份特殊的见证，传递出“普遍的人生回声”。
+
+                    3.一代知识女性的浪漫人生：岁月呼啸，美无倦意。
+
+                    “我出生在五四，成长的时候，正是我们这个国家最困难的时期。但就是在那么艰苦的条件下，年青一代的朝气、热情和责任感一点都没有丢。”爱国、进步、对真理和正义的追求，血液般融入杨苡先生的人生选择，明亮的人格让世人看见：被文学生活、文学事业、文学追求所浸润的人生是如何饱满与光洁，优雅而坚韧，乐观而从容。
+
+                    4.观人观世的乐观豁达：人生值得一过，活着就是胜利。
+
+                    因为长寿，她几乎看到了所有人的结局，荣辱浮沉，生老病死，都已成为有头有尾的故事。然而在波澜不惊的叙述后面，我们仍能不期然而然地感受到“命运”二字的分量。她常挂在嘴边的一个词是“好玩”，“好玩”影响到她的记忆和对记忆的筛选，后面未尝没有一种观人观世的态度。
+
+                    5.一部面向普通读者的口述史：学者余斌历时十年，用倾听抵抗遗忘，以细节通向历史的温度与真实。附万字《书成漫记》。
+
+                    家族记忆的吉光片羽、念念不忘的故人陈迹、私藏心底的少女心事、亲身经历的时代洪流……在十来平方米的小客厅里，一场以倾听抵抗遗忘的谈话持续了十余年，终于成书。“我想达到的，第一是真实，第二是真实，第三还是真实，而通向这真实的，第一是细节，第二是细节，第三还是细节。”有温度的历史是无数个体“命运”的汇集与交响，见证个体命运，也是在“见证历史”。
+
+                    6.收录珍贵历史照片150张，全书彩印；锁线裸脊，尽显岁月沉淀之美；精美拉页，定格10个10年。
+
+                    由于出身世家的缘故，杨先生留存自二十世纪初以来大量照片，本书收录珍贵历史照片150余张，全书彩印，辅以详实图注作为口述的延伸和补充。由“中国最美的书”奖得主周伟伟担纲设计统筹，苍青配色寓意生命常青。正文采用纯木浆纸印刷，藏读两宜；图片采用古典艺术纸印刷，还原真挚本色。锁线裸脊，装帧典雅，尽显岁月沉淀之美。附精美拉页，10个10年，眉眼间定格百年历史。
+
+                    【评论&声音】
+
+                    毕飞宇 | 张立宪 | 鲁豫 | 徐蓓 倾情推荐
+
+                    杨苡先生是五四运动的同龄人，是自西南联大迈向广阔生活的进步学子，是首创“呼啸山庄”这一译名并使该译本成为经典的重要翻译家，是兼及诗歌、散文、儿童文学创作的勤勉写作者。山河沦落时，杨苡先生不甘安守于家庭的庇护，怀着青春热血投身时代洪流与祖国同命运；家国康宁时，杨苡先生古稀之年以生花妙笔完成《天真与经验之歌》《我赤裸裸地来：罗丹传》等著作的翻译，依然满怀蓬勃意气。
+
+                    ——中国作协主席、中国文联主席铁凝，中国作协党组书记、副主席 张宏森
+
+                    每次去看望杨苡先生，都能感受到她的安静，同时也能感受到她的冲击。她能够安安静静地激励别人、鼓舞别人。她是批判的，更是令人尊敬的，在她的家里，我无数次体会到那种来自杨苡的幸福。我相信，体会到这种幸福的绝不可能只有我一个。
+
+                    ——中国作协副主席、江苏省作协主席 毕飞宇
+
+                    本文属口述实录体，传主是已经百岁高龄的翻译家杨苡，文章的价值并不在于年龄、身份这些外在的东西，而是其精神内核：这是一篇“祛魅”的好文，它破除了我们对所谓“最后贵族”“簪缨之家”司空见惯的膜拜和讴歌。
+
+                    ——《读库》主编 张立宪
+
+                    杨苡先生不是一般的百岁老人。她的家族和师友中，不乏中国近现代史上星光闪耀的人物；她在西南联大和中央大学的同学们——那些不同信仰、不同家世、不同性情的青春生命，各自有着令人唏嘘的命运——这注定了杨苡先生的口述自传，同时也是过去一百年间的家国史。时代不是她的人生背景，她的人生就是时代本身。
+
+                    ——《西南联大》《九零后》导演 徐蓓
+                   </span>
+                    </div>
+                </div>
+            </font>
+                <div class="more">
+                    <div class="more-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> 2023-1
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> 杨苡
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i>7186
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" data-src="holder.js/64x64" alt="64×64"
+                         src="/static/img/同意.jpg"
+                         data-holder-rendered="true" _mstalt="38818" _msthash="1169" style="width: 64px; height: 64px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" _msttexthash="13787852" _msthash="1170">同意</h4><font _mstmutation="1"
+                                                                                                 _msttexthash="487371638"
+                                                                                                 _msthash="1171">
+                <div>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true" style="color:orange"></i>
+                </div>
+                <div class="content">
+                    <div class="text">
+                        <label class="btn">全部展开</label>
+                        <span>
+                            是的，我同意了，那年我十四岁。
+
+                他们说我不是受害者，而是同谋。
+
+                ☆
+
+                推动法国性同意立法的现象级图书
+
+                授权29种语言 法语版销量超30万
+
+                让-雅克·卢梭自传奖| ELLE杂志读者大奖非虚构奖
+
+                ☆
+
+                这是一部关于创伤、痊愈与勇气的回忆录。
+
+                作者瓦内莎·斯普林格拉以冷静、精确而坦诚的文字，讲述了自己14岁时被年长她30多岁的法国作家G引诱、控制，并发展出一段畸形关系的经历。关系破裂后，这段经历仍被G作为文学素材一再书写，他在文坛也声名愈盛，而瓦内莎仿佛被囚禁在文字中，失去了诠释自己人生的能力，永远停留在十四岁。
+
+                “选中那些孤独、敏感、缺乏家庭关怀的女孩时，G就清楚地知道她们不可能威胁到他的名声。因为沉默便意味着同意。”
+
+                有时候，只需要一个声音，就能打破沉默的共谋。
+
+                ⚡
+
+                打破沉默的勇气之作，以亲身经历反思“同意”背后的权力不平等与暴力
+
+                直击未成年人成长环境中的层层疏漏,避免房思琪式悲剧再次上演
+
+                当谎言被伤害书写成浪漫，被掠夺的青春又由谁来偿还？
+
+                “爱情不分年龄，可问题并不在这里。”
+
+                “文学视自己凌驾于一切社会道德评判之上，但作为出版人，我们有义务让读者明白，成年人和未达到性同意年龄的未成年人发生性关系应当受到谴责，也会遭到法律的惩罚。 ——瓦内莎·斯普林格拉
+
+                ⚡
+
+                推动法国社会变革的胜利之书，标志着法国社会对待恋童问题的态度转向
+
+                在西方社会引起巨大舆论震荡，《纽约时报》《卫报》《世界报》《金融时报》等重量级媒体纷纷撰文推荐
+
+                《同意》像一枚燃烧弹，向法国的脸上掷去，这是一部令人眼花缭乱又高度克制的愤怒之作……出版以后，检察官对G展开调查。他与三家出版社的合作被终止，终身津贴被取消……政府宣布将性同意年龄设定为15岁。无论从哪一种维度来看，她的书都是一次胜利。 ——《纽约时报》
+
+                ⚡
+
+                鼓舞无数受伤心灵的治愈之书，引发万千读者深刻共鸣
+
+                我想代表我们所有人感谢作者：那些被强奸的年轻女孩，那些“荡妇”，那些不敢发声的人，那些发声却受到阻碍的人，那些不知所措的人，幸存下来的人，没能幸存的人，被污名化的人，被自恋的变态者摧毁的人，认为“一切都是自己的错”的人。我再一次发自内心地感谢她。——亚马逊读者
+
+                ⚡
+
+                小开本设计，平装双封，轻便易携，舒适阅读
+
+                --------------------
+
+                《同意》是一个优雅铺设而成的陷阱，一部对欲望与文学提出尖锐质疑的回忆录，它还质疑了一种文化，这种文化痴迷于女性的青春与她们的经验匮乏，而非她们的艺术。 ——《巴黎评论》
+
+                斯普林格拉写下这部回忆录并不仅仅是为了她自己，她写作是为了呼吁人们停止将那种有毒的男性气质正常化，它不应该因为这个男性是一个“伟大的艺术家”而受到赦免……《同意》是悲剧性的，但也充满力量，并且它是有史以来关于这个话题最重要的证据之一。 ——《当代世界文学》
+
+                《同意》实际上探讨的是权力问题：我们把权力交给谁，以及应该在哪些方面加以限制。它亦是对不平等问题的纠正。 ——《星期日泰晤士报》
+                   </span>
+
+                    </div>
+                </div>
+            </font>
+                <div class="more">
+                    <div class="more-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> 2023-2-8
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> [法] 瓦内莎·斯普林格拉
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i> 9783
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" data-src="holder.js/64x64" alt="64×64"
+                         src="/static/img/我还能看多少次满月升起.jpg"
+                         data-holder-rendered="true" _mstalt="38818" _msthash="1169" style="width: 64px; height: 96px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" _msttexthash="13787852" _msthash="1170">我还能看到多少次满月升起</h4><font
+                    _mstmutation="1"
+                    _msttexthash="487371638"
+                    _msthash="1171">
+                <div>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true" style="color:orange"></i>
+                </div>
+                <div class="content">
+                    <div class="text">
+                        <label class="btn">全部展开</label>
+                        <span>
+                            “如果什么都不做的话，只剩半年的生命了。”
+
+                            这是 2020 年 12 月，发现癌细胞转移时，医生的宣告。
+
+                            然而，在那一天来临之前，有些话必须要说。
+
+                            关于艺术创作和社会活动背后的哲学，关于坂本家的历史和家人的羁绊， 以及关于自己离开后的世界……
+
+                            本书是继回顾幼年至五十七岁人生的《音乐即自由》后，记录坂本龙一暮年足迹并将 遗赠给未来的决定性自传。
+
+                            收录由好友铃木正文亲自撰写的后记，记录作者最后的时光。
+                   </span>
+
+                    </div>
+                </div>
+            </font>
+                <div class="more">
+                    <div class="more-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> 2023-6-21
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> [日] 坂本龙一
+                    </div>
+                    <div class="more-item">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i>5008
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-3">
+        <!--        面板-->
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-newspaper-o" aria-hidden="true"
+                                          style="color: #5e5e5e;font-size: 18px"></i> 最新推荐
+            </div>
+            <div class="panel-body">
+                国际知名作家余华新作！<a href="">《十八岁出门远行》</a><br>
+                “我感到这汽车虽然遍体鳞伤，可它心窝还是健全的，还是暖和的。我知道自己的心窝也是暖和的。我一直在寻找旅店，没想到旅店你竟在这里。”
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fa fa-file-powerpoint-o" aria-hidden="true"
+                                          style="color:#9acfea;font-size: 18px"></i> 评分推荐
+            </div>
+            <div class="panel-body">
+                18万人参与，评分超9.5分，高分神作 <a href="">《三体》</a><br>
+                超多科幻爱好者选择的入门之作。著名作家刘慈欣巅峰之作。
+            </div>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading"><i class="fa fa-fire" aria-hidden="true" style="color:red;font-size: 18px"></i>
+                热门推荐
+            </div>
+            <div class="panel-body">
+                爆火小说———<a href="">《太白金星有点烦》</a><br>
+                “怪不得满天神佛个个清净无为、不昧诸缘。只有不主动做事，才不会沾染因果啊！”<br>
+                地下取经队伍降妖除魔百般威武，天上神界仙界各怀心思斗智斗勇。现代视角另类演绎西游故事，就算成仙也得讲究职场智慧。
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--        分页-->
+<nav aria-label="Page navigation" style="margin-left: 50px">
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</div>
+
+</div>
+</body>
+</html>

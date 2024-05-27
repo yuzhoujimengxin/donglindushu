@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员评论管理</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <style>
+        .title {
+            font-size: 32px;
+            margin-top: 40px;
+            margin-left: 40px;
+            font-weight: bold;
+        }
+
+        .img {
+            width: 200px;
+            height: 300px;
+            margin-left: 24px;
+
+        }
+
+        .text {
+            font-size: 14px;
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-left: 20px;
+            display: inline-block
+        }
+
+        .in-fo {
+            display: block;
+            height: 300px;
+        }
+
+        .content {
+            margin-left: 40px;
+            margin-top: 20px;
+        }
+
+        .input {
+            display: inline-block;
+            width: 70%;
+            margin-left: 40px;
+            margin-top: 20px
+        }
+
+        .view_comment {
+            font-size: 18px;
+        }
+
+        .comment {
+            width: 800px;
+            height: 1000px;
+            margin-top: 10px;
+            margin-left: 40px;
+            padding: 30px;
+            border: 2px solid #9d9d9d;
+        }
+
+    </style>
+
+    <script src="/static/js/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/static/plugins/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">东林读书</a>
+        </div>
+
+        <!--全站~~更多导航 -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">全站Top<span class="sr-only">(current)</span></a></li>
+                <li><a href="#">文学</a></li>
+                <li><a href="#">流行</a></li>
+                <li><a href="#">文化</a></li>
+                <li><a href="#">生活</a></li>
+                <li><a href="#">科技</a></li>
+                <li><a href="#">经管</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">东林动态<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">数字东林</a></li>
+                        <li><a href="#">教务系统</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林图书馆</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林计控学院</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="想要搜索的内容">
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> 搜索
+                </button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <!--            控制管理员模块显示-->
+                    {%if is_admin%}
+                    <div id="admin-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">管理员：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                            <li><a href="/admin_comment">管理员评论管理</a></li>
+                            <li><a href="/file_load">文件上传预测</a></li>
+                        </ul>
+                    </div>
+                    {%else%}
+                    <div id="user-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">用户：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                        </ul>
+                    </div>
+                    {%endif%}
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">更多<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">豆瓣读书</a></li>
+                        <li><a href="#">起点中文网</a></li>
+                        <li><a href="#">当当云阅读</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">亚马逊图书商店</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container clearfix">
+    <div class="clearfix">
+        <div style="font-size: 24px;font-weight: bold;padding: 20px">文件上传预测</div>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="fileInput"/><br>
+            <input type="button" value="上传并处理" onclick="uploadAndPredict()"/>
+        </form>
+    </div>
+
+</div>
+</div>
+
+</div>
+<script>
+    // 文件上传与预测
+    function uploadAndPredict() {
+        var formData = new FormData();
+        var fileInput = document.getElementById('fileInput');
+
+        if (fileInput.files.length === 0) {
+            alert("请选择文件！");
+            return;
+        }
+
+        formData.append("file", fileInput.files[0]);
+
+        $.ajax({
+            url: '/predict_file',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            xhrFields: {
+                responseType: 'blob' // 处理类型为文件流
+            },
+            success: function (data, status, xhr) {
+                // 获取文件名
+                var disposition = xhr.getResponseHeader('content-disposition');
+                var matches = /"([^"]*)"/.exec(disposition);
+                var filename = (matches != null && matches[1] ? matches[1] : 'file.txt');
+
+                // 创建一个链接元素，模拟点击下载
+                var blob = new Blob([data]);
+                var downloadUrl = URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                // 清除下载的引用
+                setTimeout(function () {
+                    URL.revokeObjectURL(downloadUrl);
+                }, 100); // 定时器避免悬挂下载
+            },
+            error: function (xhr, status, error) {
+                alert('上传失败');
+                console.error(error);
+            }
+        });
+    }
+</script>
+</body>
+</html>

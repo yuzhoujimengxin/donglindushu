@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/comment_filter/normal/3.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/normal/4.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/normal/9.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/normal/normal_1.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/run_cutdata.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/0.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/1.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/10.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/11.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/12.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/4.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/5.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/6.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/7.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/8.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/spam/9.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/comment_filter/stopwords.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/creat_UTF8.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/normal/0.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/normal/testFile.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spam/0.txt" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>

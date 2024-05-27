@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>书籍主页</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/font-awesome-4.7.0/css/font-awesome.css">
+    <style>
+        .title {
+            font-size: 32px;
+            margin-top: 40px;
+            margin-left: 40px;
+            font-weight: bold;
+        }
+
+        .img {
+            width: 200px;
+            height: 300px;
+            margin-left: 24px;
+
+        }
+
+        .text {
+            font-size: 14px;
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-left: 20px;
+            display: inline-block
+        }
+
+        .in-fo {
+            display: block;
+            height: 300px;
+        }
+
+        .content {
+            margin-left: 40px;
+            margin-top: 20px;
+        }
+
+        .input {
+            display: inline-block;
+            width: 70%;
+            margin-left: 40px;
+            margin-top: 20px
+        }
+
+        .view_comment {
+            font-size: 18px;
+        }
+
+        .comment {
+            width: 800px;
+            height: 1000px;
+            margin-top: 10px;
+            margin-left: 40px;
+            padding: 30px;
+            border: 2px solid #9d9d9d;
+        }
+
+    </style>
+
+    <script src="/static/js/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/static/plugins/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">东林读书</a>
+        </div>
+
+        <!--全站~~更多导航 -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">全站Top<span class="sr-only">(current)</span></a></li>
+                <li><a href="#">文学</a></li>
+                <li><a href="#">流行</a></li>
+                <li><a href="#">文化</a></li>
+                <li><a href="#">生活</a></li>
+                <li><a href="#">科技</a></li>
+                <li><a href="#">经管</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">东林动态<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">数字东林</a></li>
+                        <li><a href="#">教务系统</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林图书馆</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">东林计控学院</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="想要搜索的内容">
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> 搜索
+                </button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <!--            控制管理员模块显示-->
+                    {%if is_admin%}
+                    <div id="admin-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">管理员：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                            <li><a href="/admin_comment">管理员评论管理</a></li>
+                            <li><a href="/file_load">文件上传预测</a></li>
+                        </ul>
+                    </div>
+                    {%else%}
+                    <div id="user-content" style="line-height: 50px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">用户：{{username}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user_comment">历史评论管理</a></li>
+                        </ul>
+                    </div>
+                    {%endif%}
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">更多<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">豆瓣读书</a></li>
+                        <li><a href="#">起点中文网</a></li>
+                        <li><a href="#">当当云阅读</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">亚马逊图书商店</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container clearfix">
+    <div class="title">我在北京送快递</div>
+    <!--    分区-->
+    <div class="col-sm-6">
+        <!--        书籍封面-->
+        <div style="display: inline-block"><img src="/static/img/我在北京送快递.jpg" alt="我在北京送快递.jpg"
+                                                class="img"></div>
+        <div class="text">
+            作者：胡安焉 <br>
+            出版社：湖南文艺出版社 <br>
+            出品方： 浦睿文化 <br>
+            出版年：2023-3-24<br>
+            页数：296<br>
+            定价：56.00元<br>
+            装帧：平装<br>
+            ISBN:9787572609268<br>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+        <div class="in-fo">
+            <div style="font-size: 14px;color:#9d9d9d;">评分</div>
+            <div style="font-size: 28px;color: #333333;font-weight: bold">8.1</div>
+            <div>
+                <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-star" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-star-o" aria-hidden="true" style="color:orange"></i>
+            </div>
+            <div style="font-size: 14px;color: #2aabd2">44226人评价</div>
+        </div>
+    </div>
+</div>
+<div class="container clearfix">
+    <div class="content">
+        <div>内容简介</div>
+        <div>
+            进入社会工作至今的二十年间，胡安焉走南闯北，辗转于广东、广西、云南、上海、北京等地，做过快递员、夜班拣货工人、便利店店员、保安、自行车店销售、服装店导购、加油站加油工……他将日常的点滴和工作的甘苦化作真诚的自述，记录了一个平凡人在生活中的辛劳、私心、温情、正气。<br>
+
+            在物流公司夜间拣货的一年，给他留下了深刻的生理印记：“这份工作还会令人脾气变坏，因为长期熬夜以及过度劳累，人的情绪控制力会明显下降……我已经感到脑子不好使了，主要是反应变得迟钝，记忆力开始衰退。”在北京送快递的两年，他“把自己看作一个时薪30元的送货机器，达不到额定产出值就恼羞成怒、气急败坏”……
+            <br>
+
+            但他最终认识到，怀着怨恨的人生是不值得过的。这些在事后追忆中写成的工作经历，渗透着他看待生活和世界的态度与反思，旨在表达个人在有限的选择和局促的现实中，对生活意义的直面和肯定：生活中许多平凡隽永的时刻，要比现实困扰的方方面面对人生更具有决定意义。<br>
+
+            ————
+            <br>
+            ✨2023年豆瓣年度图书No.1
+            <br>
+            ✨第二届三联行读图书奖文学类中文原创年度图书、QQ阅读2023年度十大非虚构好书
+            <br>
+            ✨上市以来，南方周末、澎湃新闻、人物、南方人物周刊、新周刊、新京报、界面文化、GQ、看理想、单读等多家主流媒体或平台持续热议
+            <br>
+
+            《我在北京送快递》应该加入市民生活必读书，让更多人了解社会运转背后各行各业的力量。
+
+            ——《人民日报》
+        </div>
+    </div>
+</div>
+<div class="container clearfix">
+    <div style="font-size: x-large;font-weight: bold;margin-left: 40px;margin-top: 20px">评论区</div>
+    <div>
+        <form method="post" action="/book">
+            <input class="form-control form-control-lg input" type="text" placeholder="欢迎您发表您对本书的看法"
+                   name="comment" id="user_comment">
+            <button type="submit" class="btn btn-primary">发表</button>
+        </form>
+    </div>
+    <!--    对用户评论进行显示-->
+    <div class="comment">
+        <div class="clearfix">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="padding: 20px;font-size: 18px;width: 20%">用户</th>
+                    <th style="padding: 20px;font-size: 18px;width: 80%">评论</th>
+                </tr>
+                </thead>
+                <tbody id="comments-body">
+                <!-- Comments will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+<script>
+
+    // 发起AJAX请求到刚才Flask后端定义的/comments API，读取数据，并在页面加载时填充到表格中
+    $(document).ready(function () {
+        $.getJSON('/comments', function (data) {
+            data.forEach(function (item) {
+                $('#comments-body').append('<tr><td style="font-size: 16px;padding: 10px">' + item.username + '</td><td style="font-size: 16px;padding: 10px">' + item.comment + '</td></tr>');
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
